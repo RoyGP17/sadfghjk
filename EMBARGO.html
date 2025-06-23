@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de la Medida de Embargo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+        .btn {
+            @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 shadow-md;
+        }
+        .btn-secondary {
+            @apply bg-gray-200 text-gray-800 hover:bg-gray-300 shadow-md;
+        }
+        .btn-danger {
+            @apply bg-red-500 text-white hover:bg-red-600 shadow-md;
+        }
+        /* Style for the label when its associated radio/checkbox is checked */
+        input[type="radio"]:checked + label,
+        input[type="checkbox"]:checked + label {
+            @apply ring-2 ring-blue-500 bg-blue-50;
+        }
+        /* Base style for the clickable label */
+        .option-label {
+            @apply p-4 border border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex items-center;
+        }
+        /* Adjust spacing for visible radio/checkbox buttons */
+        .option-label input[type="radio"],
+        .option-label input[type="checkbox"] {
+            margin-right: 0.75rem; /* Equivalent to mr-3 in Tailwind */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-2xl w-full">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Análisis de Aplicación de la Medida de Embargo</h1>
+
+        <!-- Step Indicator -->
+        <div class="mb-8 flex justify-center items-center">
+            <div id="step-indicator" class="text-xl font-medium text-blue-600">Paso 1 de 7</div>
+        </div>
+
+        <!-- Steps Container -->
+        <div id="steps-container">
+            <!-- Step 1: Verifica si la pretensión es patrimonial -->
+            <div id="step-1" class="step-content active">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">1. Verifica si la pretensión es patrimonial</h2>
+                <p class="text-lg text-gray-600 mb-6">¿La obligación es apreciable en dinero o existe una deuda exigible/crédito en discusión judicial?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="pretension-si" name="pretension_patrimonial" value="si">
+                        <label for="pretension-si" class="option-label">
+                            ✅ Sí
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="pretension-no" name="pretension_patrimonial" value="no">
+                        <label for="pretension-no" class="option-label">
+                            ❌ No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Identifica la naturaleza del proceso -->
+            <div id="step-2" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">2. Identifica la naturaleza del proceso</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Se trata de un proceso de tipo:</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="proceso-declarativo" name="tipo_proceso" value="Declarativo">
+                        <label for="proceso-declarativo" class="option-label">
+                            Declarativo (Posible embargo preventivo)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="proceso-ejecutivo" name="tipo_proceso" value="Ejecutivo">
+                        <label for="proceso-ejecutivo" class="option-label">
+                            Ejecutivo (Posible embargo ejecutivo)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="proceso-ejecucion-forzada" name="tipo_proceso" value="De ejecución forzada">
+                        <label for="proceso-ejecucion-forzada" class="option-label">
+                            De ejecución forzada (Posible medida de embargo como primer acto de ejecución)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="proceso-ninguno" name="tipo_proceso" value="Ninguno de los anteriores">
+                        <label for="proceso-ninguno" class="option-label">
+                            Ninguno de los anteriores
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Examina la titularidad y situación del bien -->
+            <div id="step-3" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">3. Examina la titularidad y situación del bien</h2>
+                <p class="text-lg text-gray-600 mb-6">¿El bien es de propiedad o posesión del demandado/obligado?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="propiedad-deudor-si" name="propiedad_deudor" value="si">
+                        <label for="propiedad-deudor-si" class="option-label">
+                            ✅ Sí
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="propiedad-deudor-no" name="propiedad_deudor" value="no">
+                        <label for="propiedad-deudor-no" class="option-label">
+                            ❌ No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Evalúa si el bien es embargable -->
+            <div id="step-4" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">4. Evalúa si el bien es embargable</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Se trata de un bien legalmente embargable? (No es objetos de uso personal básico, parte del salario mínimo, alimentos, etc.)</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="embargable-si" name="bien_embargable" value="si">
+                        <label for="embargable-si" class="option-label">
+                            ✅ Sí
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="embargable-no" name="bien_embargable" value="no">
+                        <label for="embargable-no" class="option-label">
+                            ❌ No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Verifica los requisitos procesales y formales -->
+            <div id="step-5" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">5. Verifica los requisitos procesales y formales</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Se cumplen los siguientes requisitos procesales y formales?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="checkbox" id="requisito-juez" name="requisitos_procesales" value="Solicitada ante juez competente">
+                        <label for="requisito-juez" class="option-label">
+                            Solicitada ante el juez competente
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="requisito-resolucion" name="requisitos_procesales" value="Resolución motivada de embargo">
+                        <label for="requisito-resolucion" class="option-label">
+                            Dictado resolución motivada de embargo
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="requisito-inscripcion" name="requisitos_procesales" value="Inscripción del embargo (si aplica)">
+                        <label for="requisito-inscripcion" class="option-label">
+                            Inscrito el embargo cuando corresponde (ej. inmuebles, vehículos)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Analiza la proporcionalidad y razonabilidad -->
+            <div id="step-6" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">6. Analiza la proporcionalidad y razonabilidad</h2>
+                <p class="text-lg text-gray-600 mb-6">¿El valor del bien embargado es razonable frente al monto de la deuda?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="razonable-si" name="valor_razonable" value="si">
+                        <label for="razonable-si" class="option-label">
+                            ✅ Sí
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="razonable-no" name="valor_razonable" value="no">
+                        <label for="razonable-no" class="option-label">
+                            ❌ No
+                        </label>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-600 my-6">¿La medida es necesaria para evitar que el deudor disponga de los bienes?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="necesaria-si" name="medida_necesaria" value="si">
+                        <label for="necesaria-si" class="option-label">
+                            ✅ Sí
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="necesaria-no" name="medida_necesaria" value="no">
+                        <label for="necesaria-no" class="option-label">
+                            ❌ No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 7: Considera posibles oposiciones o tercerías -->
+            <div id="step-7" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">7. Considera posibles oposiciones o tercerías</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Existen oposiciones o tercerías presentadas que puedan impedir la aplicación de la medida?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="oposiciones-si" name="oposiciones_existentes" value="si">
+                        <label for="oposiciones-si" class="option-label">
+                            ✅ Sí
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="oposiciones-no" name="oposiciones_existentes" value="no">
+                        <label for="oposiciones-no" class="option-label">
+                            ❌ No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion Step -->
+            <div id="step-conclusion" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">Conclusión Final</h2>
+                <div id="final-result" class="bg-blue-50 border-l-4 border-blue-500 text-blue-800 p-4 rounded-xl shadow-inner text-lg">
+                    <!-- The conclusion will be displayed here -->
+                </div>
+                <div class="mt-8">
+                    <p class="text-lg text-gray-600 mb-4">Resumen de tus respuestas:</p>
+                    <ul id="answers-summary" class="list-disc list-inside text-gray-700 space-y-2">
+                        <!-- Summary of answers will be displayed here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-8 flex justify-between">
+            <button id="prev-btn" class="btn btn-secondary flex items-center" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Anterior
+            </button>
+            <button id="next-btn" class="btn btn-primary flex items-center ml-auto">
+                Siguiente
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button id="reset-btn" class="btn btn-danger flex items-center ml-auto" style="display: none;">
+                Reiniciar
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.102a2.247 2.247 0 01.378-.008L7.848 7.37a2.246 2.246 0 010 3.208L5.378 13.9a2.247 2.247 0 01-.378-.008V16a1 1 0 11-2 0v-2.102a2.247 2.247 0 01-.378-.008L.152 12.63a2.246 2.246 0 010-3.208L2.622 6.1a2.247 2.247 0 01.378-.008V4a1 1 0 011-1zM10 5a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <script>
+        // State variables for the application
+        let currentStep = 1;
+        const totalSteps = 7; // There are 7 main steps in this sequence
+        const answers = {
+            pretension_patrimonial: '',
+            tipo_proceso: '',
+            propiedad_deudor: '',
+            bien_embargable: '',
+            requisitos_procesales: [],
+            valor_razonable: '',
+            medida_necesaria: '',
+            oposiciones_existentes: ''
+        };
+
+        // DOM elements
+        const stepsContainer = document.getElementById('steps-container');
+        const stepIndicator = document.getElementById('step-indicator');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const finalResultDiv = document.getElementById('final-result');
+        const answersSummaryUl = document.getElementById('answers-summary');
+        const otroTipoBienText = document.getElementById('otro_tipo_bien_text'); // For Step 1 (Identificación del Bien in previous query, not present in this one)
+
+        // Event listener for "Otro" option in Step 1 (kept for consistency, though not strictly needed for "Embargo")
+        document.querySelectorAll('input[name="tipo_bien"]').forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                if (event.target.value === 'Otro') {
+                    otroTipoBienText.classList.remove('hidden');
+                } else {
+                    otroTipoBienText.classList.add('hidden');
+                    otroTipoBienText.value = ''; // Clear if not "Otro"
+                }
+            });
+        });
+
+        /**
+         * Displays the specified step and updates navigation buttons.
+         * @param {number|string} stepId - The ID of the step to display (e.g., 1, 2, 'conclusion').
+         */
+        function showStep(stepId) {
+            // Hide all step content
+            document.querySelectorAll('.step-content').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Show the target step
+            const targetStep = document.getElementById(typeof stepId === 'number' ? `step-${stepId}` : stepId);
+            if (targetStep) {
+                targetStep.classList.add('active');
+            }
+
+            // Update step indicator
+            if (typeof stepId === 'number') {
+                stepIndicator.textContent = `Paso ${stepId} de ${totalSteps}`;
+                prevBtn.style.display = (stepId === 1) ? 'none' : 'flex';
+                nextBtn.style.display = 'flex';
+                resetBtn.style.display = 'none';
+            } else if (stepId === 'step-conclusion') {
+                stepIndicator.textContent = 'Conclusión';
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+                resetBtn.style.display = 'flex';
+                generateConclusion();
+                generateAnswersSummary();
+            }
+        }
+
+        /**
+         * Moves to the next step.
+         */
+        function nextStep() {
+            saveAnswers(currentStep);
+            currentStep++;
+
+            if (currentStep > totalSteps) {
+                showStep('step-conclusion');
+            } else {
+                showStep(currentStep);
+            }
+        }
+
+        /**
+         * Moves to the previous step.
+         */
+        function prevStep() {
+            currentStep--;
+            if (currentStep < 1) {
+                currentStep = 1;
+            }
+            showStep(currentStep);
+        }
+
+        /**
+         * Saves the answers from the current step to the 'answers' object.
+         * @param {number} stepNum - The number of the step whose answers are to be saved.
+         */
+        function saveAnswers(stepNum) {
+            switch (stepNum) {
+                case 1:
+                    answers.pretension_patrimonial = document.querySelector('input[name="pretension_patrimonial"]:checked')?.value || '';
+                    break;
+                case 2:
+                    answers.tipo_proceso = document.querySelector('input[name="tipo_proceso"]:checked')?.value || '';
+                    break;
+                case 3:
+                    answers.propiedad_deudor = document.querySelector('input[name="propiedad_deudor"]:checked')?.value || '';
+                    break;
+                case 4:
+                    answers.bien_embargable = document.querySelector('input[name="bien_embargable"]:checked')?.value || '';
+                    break;
+                case 5:
+                    answers.requisitos_procesales = Array.from(document.querySelectorAll('input[name="requisitos_procesales"]:checked'))
+                        .map(cb => cb.value);
+                    break;
+                case 6:
+                    answers.valor_razonable = document.querySelector('input[name="valor_razonable"]:checked')?.value || '';
+                    answers.medida_necesaria = document.querySelector('input[name="medida_necesaria"]:checked')?.value || '';
+                    break;
+                case 7:
+                    answers.oposiciones_existentes = document.querySelector('input[name="oposiciones_existentes"]:checked')?.value || '';
+                    break;
+            }
+            console.log('Current Answers:', answers); // For debugging
+        }
+
+        /**
+         * Generates and displays the final conclusion based on collected answers.
+         */
+        function generateConclusion() {
+            let conclusion = "";
+            let canApplyMeasure = true;
+            let reasons = [];
+
+            // 1. Verifica si la pretensión es patrimonial
+            if (answers.pretension_patrimonial !== 'si') {
+                canApplyMeasure = false;
+                reasons.push("La pretensión principal debe ser dineraria.");
+            }
+
+            // 2. Identifica la naturaleza del proceso
+            const validProcessTypes = ["Declarativo", "Ejecutivo", "De ejecución forzada"];
+            if (!validProcessTypes.includes(answers.tipo_proceso)) {
+                canApplyMeasure = false;
+                reasons.push("El tipo de proceso no es adecuado para la medida de embargo.");
+            }
+
+            // 3. Examina la titularidad y situación del bien
+            if (answers.propiedad_deudor !== 'si') {
+                canApplyMeasure = false;
+                reasons.push("El bien no es de propiedad o posesión del demandado/obligado.");
+            }
+
+            // 4. Evalúa si el bien es embargable
+            if (answers.bien_embargable !== 'si') {
+                canApplyMeasure = false;
+                reasons.push("El bien no es legalmente embargable.");
+            }
+
+            // 5. Verifica los requisitos procesales y formales
+            const requiredFormalities = [
+                "Solicitada ante juez competente",
+                "Resolución motivada de embargo",
+                "Inscripción del embargo (si aplica)"
+            ];
+            const missingFormalities = requiredFormalities.filter(req => !answers.requisitos_procesales.includes(req));
+            if (missingFormalities.length > 0) {
+                canApplyMeasure = false;
+                reasons.push(`Faltan requisitos formales procesales: ${missingFormalities.join(', ')}.`);
+            }
+
+            // 6. Analiza la proporcionalidad y razonabilidad
+            if (answers.valor_razonable !== 'si') {
+                canApplyMeasure = false;
+                reasons.push("El valor del bien embargado no es razonable frente al monto de la deuda.");
+            }
+            if (answers.medida_necesaria !== 'si') {
+                canApplyMeasure = false;
+                reasons.push("La medida no es necesaria para evitar que el deudor disponga de los bienes.");
+            }
+
+            // 7. Considera posibles oposiciones o tercerías
+            if (answers.oposiciones_existentes === 'si') {
+                canApplyMeasure = false;
+                reasons.push("Existen oposiciones o tercerías presentadas que podrían afectar la aplicación de la medida.");
+            }
+
+            // Final Conclusion based on all criteria
+            if (canApplyMeasure) {
+                conclusion = `✅ SÍ ES JURÍDICAMENTE PROCEDENTE aplicar la medida de embargo para asegurar el cumplimiento de la obligación.`;
+                finalResultDiv.classList.remove('bg-red-50', 'border-red-500', 'text-red-800');
+                finalResultDiv.classList.add('bg-blue-50', 'border-blue-500', 'text-blue-800');
+            } else {
+                conclusion = `❌ NO ES JURÍDICAMENTE PROCEDENTE aplicar la medida de embargo.`;
+                if (reasons.length > 0) {
+                    conclusion += ` Razones: ${reasons.join(' ')}.`;
+                } else {
+                    conclusion += ` No se cumplen todos los requisitos legales y materiales.`;
+                }
+                finalResultDiv.classList.remove('bg-blue-50', 'border-blue-500', 'text-blue-800');
+                finalResultDiv.classList.add('bg-red-50', 'border-red-500', 'text-red-800');
+            }
+
+            finalResultDiv.textContent = conclusion;
+        }
+
+        /**
+         * Generates a summary of all collected answers.
+         */
+        function generateAnswersSummary() {
+            answersSummaryUl.innerHTML = ''; // Clear previous summary
+
+            const appendAnswer = (label, value, options) => {
+                let displayValue = value;
+                if (Array.isArray(value)) {
+                    displayValue = value.length > 0 ? value.map(val => {
+                        const option = options?.find(opt => opt.value === val);
+                        return option ? option.label.replace(/\s*\(.*\)$/g, '') : val; // Remove text in parentheses
+                    }).join(', ') : 'Ninguna seleccionada';
+                } else if (value && options) {
+                    const option = options.find(opt => opt.value === value);
+                    if (option) {
+                        displayValue = option.label.replace(/\s*\(.*\)$/g, ''); // Remove text in parentheses
+                    }
+                }
+                if (displayValue) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="font-semibold">${label}:</span> ${displayValue}`;
+                    answersSummaryUl.appendChild(li);
+                }
+            };
+
+            // Define options for display (removing extra text in parentheses for cleaner summary output)
+            const yesNoOptions = [{value: 'si', label: 'Sí'}, {value: 'no', label: 'No'}];
+
+            appendAnswer('Pretensión Patrimonial', answers.pretension_patrimonial, yesNoOptions);
+            appendAnswer('Naturaleza del Proceso', answers.tipo_proceso, [
+                {value: 'Declarativo', label: 'Declarativo'},
+                {value: 'Ejecutivo', label: 'Ejecutivo'},
+                {value: 'De ejecución forzada', label: 'De ejecución forzada'},
+                {value: 'Ninguno de los anteriores', label: 'Ninguno de los anteriores'}
+            ]);
+            appendAnswer('Propiedad/Posesión del Deudor', answers.propiedad_deudor, yesNoOptions);
+            appendAnswer('Bien Embargable', answers.bien_embargable, yesNoOptions);
+            appendAnswer('Requisitos Procesales', answers.requisitos_procesales, [
+                {value: 'Solicitada ante juez competente', label: 'Solicitada ante juez competente'},
+                {value: 'Resolución motivada de embargo', label: 'Resolución motivada de embargo'},
+                {value: 'Inscripción del embargo (si aplica)', label: 'Inscripción del embargo (si aplica)'}
+            ]);
+            appendAnswer('Valor Razonable del Bien', answers.valor_razonable, yesNoOptions);
+            appendAnswer('Medida Necesaria', answers.medida_necesaria, yesNoOptions);
+            appendAnswer('Oposiciones o Tercerías', answers.oposiciones_existentes, yesNoOptions);
+        }
+
+        // Event Listeners for navigation buttons
+        nextBtn.addEventListener('click', nextStep);
+        prevBtn.addEventListener('click', prevStep);
+        resetBtn.addEventListener('click', () => {
+            // Reset all answers
+            Object.keys(answers).forEach(key => {
+                if (Array.isArray(answers[key])) {
+                    answers[key] = [];
+                } else {
+                    answers[key] = '';
+                }
+            });
+
+            // Clear radio/checkbox selections
+            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => checkbox.checked = false);
+            
+            // Remove 'otroTipoBienText' as it's not part of this specific workflow
+            // if (otroTipoBienText) { 
+            //     otroTipoBienText.value = '';
+            //     otroTipoBienText.classList.add('hidden');
+            // }
+
+            currentStep = 1;
+            showStep(currentStep);
+        });
+
+        // Initial display
+        showStep(currentStep);
+    </script>
+</body>
+</html>

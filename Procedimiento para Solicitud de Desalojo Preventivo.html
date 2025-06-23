@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Desalojo Preventivo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+        .btn {
+            @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 shadow-md;
+        }
+        .btn-secondary {
+            @apply bg-gray-200 text-gray-800 hover:bg-gray-300 shadow-md;
+        }
+        .btn-danger {
+            @apply bg-red-500 text-white hover:bg-red-600 shadow-md;
+        }
+        /* Style for the label when its associated radio is checked */
+        input[type="radio"]:checked + label {
+            @apply ring-2 ring-blue-500 bg-blue-50;
+        }
+        /* Base style for the clickable label */
+        .option-label {
+            @apply p-4 border border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex items-center;
+        }
+        /* Adjust spacing for visible radio buttons */
+        .option-label input[type="radio"] {
+            margin-right: 0.75rem; /* Equivalent to mr-3 in Tailwind */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-2xl w-full">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Procedimiento para Solicitud de Desalojo Preventivo</h1>
+
+        <!-- Step Indicator -->
+        <div class="mb-8 flex justify-center items-center">
+            <div id="step-indicator" class="text-xl font-medium text-blue-600">Paso 1 de 6</div>
+        </div>
+
+        <!-- Steps Container -->
+        <div id="steps-container">
+            <!-- Step 1: IDENTIFICACIÓN SI ESTAMOS ANTE UN DELITO DE USURPACIÓN -->
+            <div id="step-1" class="step-content active">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">1. Identificación de Delito de Usurpación</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Estamos ante un delito de usurpación?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="usurpacion-si" name="delito_usurpacion" value="si">
+                        <label for="usurpacion-si" class="option-label">
+                            ✅ Sí (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="usurpacion-no" name="delito_usurpacion" value="no">
+                        <label for="usurpacion-no" class="option-label">
+                            ❌ No (No procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: POSESIÓN DEL INMUEBLE POR EL AGRAVIADO -->
+            <div id="step-2" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">2. Posesión del Inmueble por el Agraviado</h2>
+                <p class="text-lg text-gray-600 mb-6">¿El agraviado posesiona el inmueble actualmente?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="agraviado-posesion-si" name="agraviado_posesion" value="si">
+                        <label for="agraviado-posesion-si" class="option-label">
+                            ✅ Sí (No procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="agraviado-posesion-no" name="agraviado_posesion" value="no">
+                        <label for="agraviado-posesion-no" class="option-label">
+                            ❌ No (Sí procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: POSESIÓN DEL INMUEBLE POR EL IMPUTADO -->
+            <div id="step-3" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">3. Posesión del Inmueble por el Imputado</h2>
+                <p class="text-lg text-gray-600 mb-6">¿El imputado tiene una posesión actual del inmueble?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="imputado-posesion-si" name="imputado_posesion" value="si">
+                        <label for="imputado-posesion-si" class="option-label">
+                            ✅ Sí (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="imputado-posesion-no" name="imputado_posesion" value="no">
+                        <label for="imputado-posesion-no" class="option-label">
+                            ❌ No (No procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: VERIFICAR EN QUE ETAPA DEL PROCESO NOS ENCONTRAMOS -->
+            <div id="step-4" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">4. Etapa del Proceso</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Me encuentro en la etapa de diligencias preliminares o Investigación Preparatoria?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="etapa-si" name="etapa_proceso" value="si">
+                        <label for="etapa-si" class="option-label">
+                            ✅ Sí (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="etapa-no" name="etapa_proceso" value="no">
+                        <label for="etapa-no" class="option-label">
+                            ❌ No (No procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: SER SUJETO PROCESAL LEGITIMADO: FISCAL Y AGRAVIADO -->
+            <div id="step-5" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">5. Sujeto Procesal Legitimado</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Soy el agraviado de la acción delictiva?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="legitimado-si" name="sujeto_legitimado" value="si">
+                        <label for="legitimado-si" class="option-label">
+                            ✅ Sí (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="legitimado-no" name="sujeto_legitimado" value="no">
+                        <label for="legitimado-no" class="option-label">
+                            ❌ No (No procede por falta de legitimidad)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: TENER ELEMENTOS DE CONVICCIÓN QUE ACREDITEN MI DERECHO POSESIONARIO -->
+            <div id="step-6" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">6. Elementos de Convicción</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Tengo elementos de convicción que acrediten mi derecho posesionario?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="elementos-si" name="elementos_conviccion" value="si">
+                        <label for="elementos-si" class="option-label">
+                            ✅ Sí (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="elementos-no" name="elementos_conviccion" value="no">
+                        <label for="elementos-no" class="option-label">
+                            ❌ No (No procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion Step -->
+            <div id="step-conclusion" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">Conclusión Final</h2>
+                <div id="final-result" class="bg-blue-50 border-l-4 border-blue-500 text-blue-800 p-4 rounded-xl shadow-inner text-lg">
+                    <!-- The conclusion will be displayed here -->
+                </div>
+                <div class="mt-8">
+                    <p class="text-lg text-gray-600 mb-4">Resumen de tus respuestas:</p>
+                    <ul id="answers-summary" class="list-disc list-inside text-gray-700 space-y-2">
+                        <!-- Summary of answers will be displayed here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-8 flex justify-between">
+            <button id="prev-btn" class="btn btn-secondary flex items-center" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Anterior
+            </button>
+            <button id="next-btn" class="btn btn-primary flex items-center ml-auto">
+                Siguiente
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button id="reset-btn" class="btn btn-danger flex items-center ml-auto" style="display: none;">
+                Reiniciar
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.102a2.247 2.247 0 01.378-.008L7.848 7.37a2.246 2.246 0 010 3.208L5.378 13.9a2.247 2.247 0 01-.378-.008V16a1 1 0 11-2 0v-2.102a2.247 2.247 0 01-.378-.008L.152 12.63a2.246 2.246 0 010-3.208L2.622 6.1a2.247 2.247 0 01.378-.008V4a1 1 0 011-1zM10 5a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <script>
+        // State variables for the application
+        let currentStep = 1;
+        const totalSteps = 6; // Excluding the conclusion step for count
+        const answers = {
+            delito_usurpacion: '',
+            agraviado_posesion: '',
+            imputado_posesion: '',
+            etapa_proceso: '',
+            sujeto_legitimado: '',
+            elementos_conviccion: ''
+        };
+
+        // DOM elements
+        const stepsContainer = document.getElementById('steps-container');
+        const stepIndicator = document.getElementById('step-indicator');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const finalResultDiv = document.getElementById('final-result');
+        const answersSummaryUl = document.getElementById('answers-summary');
+
+        /**
+         * Displays the specified step and updates navigation buttons.
+         * @param {number|string} stepId - The ID of the step to display (e.g., 1, 2, 'conclusion').
+         */
+        function showStep(stepId) {
+            // Hide all step content
+            document.querySelectorAll('.step-content').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Show the target step
+            const targetStep = document.getElementById(typeof stepId === 'number' ? `step-${stepId}` : stepId);
+            if (targetStep) {
+                targetStep.classList.add('active');
+            }
+
+            // Update step indicator
+            if (typeof stepId === 'number') {
+                stepIndicator.textContent = `Paso ${stepId} de ${totalSteps}`;
+                prevBtn.style.display = (stepId === 1) ? 'none' : 'flex';
+                nextBtn.style.display = 'flex';
+                resetBtn.style.display = 'none';
+            } else if (stepId === 'step-conclusion') {
+                stepIndicator.textContent = 'Conclusión';
+                prevBtn.style.display = 'none'; // No "previous" from conclusion
+                nextBtn.style.display = 'none';
+                resetBtn.style.display = 'flex';
+                generateConclusion();
+                generateAnswersSummary();
+            }
+        }
+
+        /**
+         * Moves to the next step.
+         */
+        function nextStep() {
+            saveAnswers(currentStep);
+            currentStep++;
+
+            if (currentStep > totalSteps) {
+                showStep('step-conclusion');
+            } else {
+                showStep(currentStep);
+            }
+        }
+
+        /**
+         * Moves to the previous step.
+         */
+        function prevStep() {
+            currentStep--;
+            if (currentStep < 1) {
+                currentStep = 1;
+            }
+            showStep(currentStep);
+        }
+
+        /**
+         * Saves the answers from the current step to the 'answers' object.
+         * @param {number} stepNum - The number of the step whose answers are to be saved.
+         */
+        function saveAnswers(stepNum) {
+            switch (stepNum) {
+                case 1:
+                    answers.delito_usurpacion = document.querySelector('input[name="delito_usurpacion"]:checked')?.value || '';
+                    break;
+                case 2:
+                    answers.agraviado_posesion = document.querySelector('input[name="agraviado_posesion"]:checked')?.value || '';
+                    break;
+                case 3:
+                    answers.imputado_posesion = document.querySelector('input[name="imputado_posesion"]:checked')?.value || '';
+                    break;
+                case 4:
+                    answers.etapa_proceso = document.querySelector('input[name="etapa_proceso"]:checked')?.value || '';
+                    break;
+                case 5:
+                    answers.sujeto_legitimado = document.querySelector('input[name="sujeto_legitimado"]:checked')?.value || '';
+                    break;
+                case 6:
+                    answers.elementos_conviccion = document.querySelector('input[name="elementos_conviccion"]:checked')?.value || '';
+                    break;
+            }
+            console.log('Current Answers:', answers); // For debugging
+        }
+
+        /**
+         * Generates and displays the final conclusion based on collected answers.
+         */
+        function generateConclusion() {
+            let conclusion = "";
+            let canProceed = true;
+            let reasons = [];
+
+            // Step 1: Delito de Usurpación
+            if (answers.delito_usurpacion !== 'si') {
+                canProceed = false;
+                reasons.push("El desalojo preventivo solo procede en el delito de usurpación.");
+            }
+
+            // Step 2: Posesión del inmueble por el agraviado
+            if (answers.agraviado_posesion !== 'no') {
+                canProceed = false;
+                reasons.push("Es requisito que el agraviado esté en desposesión del bien.");
+            }
+
+            // Step 3: Posesión del inmueble por el imputado
+            if (answers.imputado_posesion !== 'si') {
+                canProceed = false;
+                reasons.push("El imputado debe tener posesión actual del inmueble para que proceda.");
+            }
+
+            // Step 4: Etapa del Proceso
+            if (answers.etapa_proceso !== 'si') {
+                canProceed = false;
+                reasons.push("La solicitud únicamente se presenta en la etapa de diligencias preliminares o Investigación Preparatoria.");
+            }
+
+            // Step 5: Sujeto Procesal Legitimado
+            if (answers.sujeto_legitimado !== 'si') {
+                canProceed = false;
+                reasons.push("Solo el fiscal y el agraviado están legitimados para presentar la solicitud.");
+            }
+
+            // Step 6: Elementos de Convicción
+            if (answers.elementos_conviccion !== 'si') {
+                canProceed = false;
+                reasons.push("Es necesario incorporar elementos de convicción que acrediten el derecho posesionario.");
+            }
+
+            if (canProceed) {
+                conclusion = `✅ SÍ ES POSIBLE solicitar esta medida coercitiva real. Se cumplen todos los pasos necesarios.`;
+                finalResultDiv.classList.remove('bg-red-50', 'border-red-500', 'text-red-800');
+                finalResultDiv.classList.add('bg-blue-50', 'border-blue-500', 'text-blue-800');
+            } else {
+                conclusion = `❌ NO ES POSIBLE solicitar esta medida coercitiva real. No se cumplen todos los pasos.`;
+                if (reasons.length > 0) {
+                    conclusion += ` Razones: ${reasons.join(' ')}`;
+                }
+                finalResultDiv.classList.remove('bg-blue-50', 'border-blue-500', 'text-blue-800');
+                finalResultDiv.classList.add('bg-red-50', 'border-red-500', 'text-red-800');
+            }
+
+            finalResultDiv.textContent = conclusion;
+        }
+
+        /**
+         * Generates a summary of all collected answers.
+         */
+        function generateAnswersSummary() {
+            answersSummaryUl.innerHTML = ''; // Clear previous summary
+
+            const appendAnswer = (label, value, options) => {
+                let displayValue = value;
+                if (value && options) {
+                    const option = options.find(opt => opt.value === value);
+                    if (option) {
+                        displayValue = option.label;
+                    }
+                }
+                if (displayValue) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="font-semibold">${label}:</span> ${displayValue}`;
+                    answersSummaryUl.appendChild(li);
+                }
+            };
+
+            // Define options for display
+            const yesNoOptions = [{value: 'si', label: 'Sí'}, {value: 'no', label: 'No'}];
+
+            appendAnswer('Delito de Usurpación', answers.delito_usurpacion, [
+                {value: 'si', label: 'Sí (Procede)'},
+                {value: 'no', label: 'No (No procede)'}
+            ]);
+            appendAnswer('Posesión del agraviado', answers.agraviado_posesion, [
+                {value: 'si', label: 'Sí (No procede)'},
+                {value: 'no', label: 'No (Sí procede)'}
+            ]);
+            appendAnswer('Posesión del imputado', answers.imputado_posesion, [
+                {value: 'si', label: 'Sí (Procede)'},
+                {value: 'no', label: 'No (No procede)'}
+            ]);
+            appendAnswer('Etapa del Proceso', answers.etapa_proceso, yesNoOptions);
+            appendAnswer('Sujeto Legitimado', answers.sujeto_legitimado, [
+                {value: 'si', label: 'Sí (Procede)'},
+                {value: 'no', label: 'No (No procede por falta de legitimidad)'}
+            ]);
+            appendAnswer('Elementos de Convicción', answers.elementos_conviccion, yesNoOptions);
+        }
+
+        // Event Listeners for navigation buttons
+        nextBtn.addEventListener('click', nextStep);
+        prevBtn.addEventListener('click', prevStep);
+        resetBtn.addEventListener('click', () => {
+            // Reset all answers
+            Object.keys(answers).forEach(key => {
+                answers[key] = '';
+            });
+
+            // Clear radio selections
+            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => radio.checked = false);
+
+            currentStep = 1;
+            showStep(currentStep);
+        });
+
+        // Initial display
+        showStep(currentStep);
+    </script>
+</body>
+</html>
