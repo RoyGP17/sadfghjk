@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Procedimientos Jurídicos Integrados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .section { display: none; }
+        .section.active { display: block; }
+        nav button.active { background-color: #2563eb; color: white; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Menú de navegación -->
+    <nav class="bg-white shadow p-4 flex justify-around sticky top-0 z-10">
+        <button onclick="showSection('incautacion')" class="px-4 py-2 rounded hover:bg-blue-100">Incautación</button>
+        <button onclick="showSection('pension')" class="px-4 py-2 rounded hover:bg-green-100">Pensión de Alimentos</button>
+        <button onclick="showSection('desalojo')" class="px-4 py-2 rounded hover:bg-yellow-100">Desalojo Preventivo</button>
+        <button onclick="showSection('inhibicion')" class="px-4 py-2 rounded hover:bg-red-100">Orden de Inhibición</button>
+        <button onclick="showSection('embargo')" class="px-4 py-2 rounded hover:bg-red-100">Embargo</button>
+    </nav>
+
+    <!-- Contenido incrustado -->
+    <main class="p-4">
+        <section id="incautacion" class="section active" center>
+            <iframe src="https://github.com/RoyGP17/DERECHO/blob/main/incautacion.html" class="w-full h-[1200px] bg-white shadow-lg rounded-lg border" title="Incautación"></iframe>
+        </section>
+        <section id="pension" class="section">
+            <iframe src="PENSIÓN ANTICIPADA DE ALIMENTOS FF.html" class="w-full h-[1200px] bg-white shadow-lg rounded-lg border" title="Pensión de Alimentos"></iframe>
+        </section>
+        <section id="desalojo" class="section">
+            <iframe src="Procedimiento para Solicitud de Desalojo Preventivo.html" class="w-full h-[1200px] bg-white shadow-lg rounded-lg border" title="Desalojo Preventivo"></iframe>
+        </section>
+        <section id="inhibicion" class="section">
+            <iframe src="ORDEN DE INHIBICION.html" class="w-full h-[1200px] bg-white shadow-lg rounded-lg border" title="Orden de Inhibición"></iframe>
+        </section>
+        <section id="embargo" class="section">
+            <iframe src="EMBARGO.html" class="w-full h-[1200px] bg-white shadow-lg rounded-lg border" title="Orden de Embargo"></iframe>
+        </section>
+    </main>
+
+    <!-- Script para navegación -->
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

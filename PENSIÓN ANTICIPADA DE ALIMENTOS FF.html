@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Pensión Anticipada de Alimentos</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+        .btn {
+            @apply px-6 py-3 rounded-xl font-semibold transition-all duration-200;
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white hover:bg-blue-700 shadow-md;
+        }
+        .btn-secondary {
+            @apply bg-gray-200 text-gray-800 hover:bg-gray-300 shadow-md;
+        }
+        .btn-danger {
+            @apply bg-red-500 text-white hover:bg-red-600 shadow-md;
+        }
+        /* Style for the label when its associated radio is checked */
+        input[type="radio"]:checked + label {
+            @apply ring-2 ring-blue-500 bg-blue-50;
+        }
+        /* Base style for the clickable label */
+        .option-label {
+            @apply p-4 border border-gray-300 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors duration-200 flex items-center;
+        }
+        /* Adjust spacing for visible radio buttons */
+        .option-label input[type="radio"] {
+            margin-right: 0.75rem; /* Equivalent to mr-3 in Tailwind */
+        }
+        /* Style for multiple checkboxes within the same step */
+        input[type="checkbox"]:checked + label {
+            @apply ring-2 ring-blue-500 bg-blue-50;
+        }
+        .option-label input[type="checkbox"] {
+            margin-right: 0.75rem;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-2xl w-full">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Criterios para Pensión Anticipada de Alimentos</h1>
+
+        <!-- Step Indicator -->
+        <div class="mb-8 flex justify-center items-center">
+            <div id="step-indicator" class="text-xl font-medium text-blue-600">Paso 1 de 6</div>
+        </div>
+
+        <!-- Steps Container -->
+        <div id="steps-container">
+            <!-- Step 1: CONDICIÓN DE IMPOSICIÓN -->
+            <div id="step-1" class="step-content active">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">1. Condición de Imposición</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Cuándo procede la imposición?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="condicion-procede" name="condicion_imposicion" value="procede">
+                        <label for="condicion-procede" class="option-label">
+                            ✅ Delito causa daños y perjuicios resarcibles (procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="condicion-no-procede" name="condicion_imposicion" value="no procede">
+                        <label for="condicion-no-procede" class="option-label">
+                            ❌ Delito no causa daño y perjuicio resarcible (No procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: PRESUPUESTOS - Delito -->
+            <div id="step-2" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">2. Presupuestos: Tipo de Delito</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Cuándo se interpone esta medida? (Seleccione una opción)</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="delito-homicidio" name="tipo_delito" value="HOMICIDIO">
+                        <label for="delito-homicidio" class="option-label">
+                            HOMICIDIO (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="delito-lesiones-graves" name="tipo_delito" value="LESIONES_GRAVES">
+                        <label for="delito-lesiones-graves" class="option-label">
+                            LESIONES GRAVES (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="delito-violencia-familiar" name="tipo_delito" value="VIOLENCIA_FAMILIAR">
+                        <label for="delito-violencia-familiar" class="option-label">
+                            VIOLENCIA FAMILIAR (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="delito-omision-asistencia" name="tipo_delito" value="OMISION_ASISTENCIA_FAMILIAR">
+                        <label for="delito-omision-asistencia" class="option-label">
+                            OMISIÓN DE ASISTENCIA FAMILIAR (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="delito-violacion-libertad" name="tipo_delito" value="VIOLACION_LIBERTAD_SEXUAL">
+                        <label for="delito-violacion-libertad" class="option-label">
+                            VIOLACIÓN DE LIBERTAD SEXUAL (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="delito-otro" name="tipo_delito" value="Otro delito">
+                        <label for="delito-otro" class="option-label">
+                            Otro delito (No procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2.5: PRESUPUESTOS - Condiciones Adicionales -->
+            <div id="step-2-5" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">2.5. Presupuestos: Condiciones del Afectado</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Cuáles son las condiciones del afectado? (Seleccione una o más opciones)</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="checkbox" id="condicion-subsistencia" name="condiciones_afectado" value="IMPOSIBILIDAD_DE_SUBSISTENCIA">
+                        <label for="condicion-subsistencia" class="option-label">
+                            IMPOSIBILIDAD DE SUBSISTENCIA (procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="condicion-incapacidad" name="condiciones_afectado" value="INCAPACIDAD_DE_TRABAJO">
+                        <label for="condicion-incapacidad" class="option-label">
+                            INCAPACIDAD DE TRABAJO (procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="condicion-otro" name="condiciones_afectado" value="Otro">
+                        <label for="condicion-otro" class="option-label">
+                            Otro (No procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: SUJETO LEGITIMADO -->
+            <div id="step-3" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">3. Sujeto Legitimado</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Quién debe solicitarlo?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="legitimado-fiscal" name="sujeto_legitimado" value="Fiscal">
+                        <label for="legitimado-fiscal" class="option-label">
+                            ✅ Fiscal (procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="legitimado-actor-civil" name="sujeto_legitimado" value="Actor civil">
+                        <label for="legitimado-actor-civil" class="option-label">
+                            ✅ Actor civil (procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="legitimado-otro" name="sujeto_legitimado" value="Otro">
+                        <label for="legitimado-otro" class="option-label">
+                            ❌ Otro (no procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: SUJETO OBLIGADO -->
+            <div id="step-4" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">4. Sujeto Obligado</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Contra quién se incoa?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="obligado-imputado" name="sujeto_obligado" value="Imputado">
+                        <label for="obligado-imputado" class="option-label">
+                            ✅ Imputado (procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="obligado-tercero" name="sujeto_obligado" value="Tercero civil responsable">
+                        <label for="obligado-tercero" class="option-label">
+                            ✅ Tercero civil responsable (procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="obligado-otro" name="sujeto_obligado" value="Otro">
+                        <label for="obligado-otro" class="option-label">
+                            ❌ Otro (no procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: BENEFICIARIO -->
+            <div id="step-5" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">5. Beneficiario</h2>
+                <p class="text-lg text-gray-600 mb-6">¿En favor de quién se ordena?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="beneficiario-sujeto-pasivo" name="beneficiario" value="Sujeto pasivo del Delito">
+                        <label for="beneficiario-sujeto-pasivo" class="option-label">
+                            ✅ Sujeto pasivo del Delito (Procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="beneficiario-familiares" name="beneficiario" value="Familiares">
+                        <label for="beneficiario-familiares" class="option-label">
+                            ✅ Familiares (procede)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="beneficiario-cualquier-otro" name="beneficiario" value="Cualquier otra persona">
+                        <label for="beneficiario-cualquier-otro" class="option-label">
+                            ❌ Cualquier otra persona (No procede)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: ACREDITACIÓN -->
+            <div id="step-6" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">6. Acreditación</h2>
+                <p class="text-lg text-gray-600 mb-6">¿Se presentaron los medios de prueba necesarios para aplicar esta medida cautelar?</p>
+                <div class="space-y-4">
+                    <div>
+                        <input type="radio" id="acreditacion-si" name="acreditacion" value="si">
+                        <label for="acreditacion-si" class="option-label">
+                            ✅ Sí (En efecto se acreditó su necesidad)
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="acreditacion-no" name="acreditacion" value="no">
+                        <label for="acreditacion-no" class="option-label">
+                            ❌ No (Únicamente se alegó, pero no se presentó)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion Step -->
+            <div id="step-conclusion" class="step-content">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">Conclusión Final</h2>
+                <div id="final-result" class="bg-blue-50 border-l-4 border-blue-500 text-blue-800 p-4 rounded-xl shadow-inner text-lg">
+                    <!-- The conclusion will be displayed here -->
+                </div>
+                <div class="mt-8">
+                    <p class="text-lg text-gray-600 mb-4">Resumen de tus respuestas:</p>
+                    <ul id="answers-summary" class="list-disc list-inside text-gray-700 space-y-2">
+                        <!-- Summary of answers will be displayed here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-8 flex justify-between">
+            <button id="prev-btn" class="btn btn-secondary flex items-center" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Anterior
+            </button>
+            <button id="next-btn" class="btn btn-primary flex items-center ml-auto">
+                Siguiente
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button id="reset-btn" class="btn btn-danger flex items-center ml-auto" style="display: none;">
+                Reiniciar
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.102a2.247 2.247 0 01.378-.008L7.848 7.37a2.246 2.246 0 010 3.208L5.378 13.9a2.247 2.247 0 01-.378-.008V16a1 1 0 11-2 0v-2.102a2.247 2.247 0 01-.378-.008L.152 12.63a2.246 2.246 0 010-3.208L2.622 6.1a2.247 2.247 0 01.378-.008V4a1 1 0 011-1zM10 5a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <script>
+        // State variables for the application
+        let currentStep = 1;
+        // Adjusted total steps for the new structure (Presupuestos split into 2 steps)
+        const totalSteps = 7; // Condition of imposition, 2 for presupuestos, 3 for others
+
+        const answers = {
+            condicion_imposicion: '',
+            tipo_delito: '',
+            condiciones_afectado: [], // Now a checkbox group
+            sujeto_legitimado: '',
+            sujeto_obligado: '',
+            beneficiario: '',
+            acreditacion: ''
+        };
+
+        // DOM elements
+        const stepsContainer = document.getElementById('steps-container');
+        const stepIndicator = document.getElementById('step-indicator');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const finalResultDiv = document.getElementById('final-result');
+        const answersSummaryUl = document.getElementById('answers-summary');
+        // Removed backgroundMusic variable as audio tag is removed
+        // const backgroundMusic = document.getElementById('background-music');
+
+        /**
+         * Displays the specified step and updates navigation buttons.
+         * @param {number|string} stepId - The ID of the step to display (e.g., 1, 2, 'conclusion').
+         */
+        function showStep(stepId) {
+            // Hide all step content
+            document.querySelectorAll('.step-content').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Show the target step
+            const targetStep = document.getElementById(typeof stepId === 'number' ? (stepId === 2.5 ? 'step-2-5' : `step-${stepId}`) : stepId);
+            if (targetStep) {
+                targetStep.classList.add('active');
+            }
+
+            // Update step indicator
+            let displayStepNumber = stepId;
+            if (stepId === 2.5) {
+                displayStepNumber = '2.5'; // For display purposes
+            }
+
+            if (typeof stepId === 'number') {
+                stepIndicator.textContent = `Paso ${displayStepNumber} de ${totalSteps}`;
+                prevBtn.style.display = (stepId === 1) ? 'none' : 'flex';
+                nextBtn.style.display = 'flex';
+                resetBtn.style.display = 'none';
+            } else if (stepId === 'step-conclusion') {
+                stepIndicator.textContent = 'Conclusión';
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+                resetBtn.style.display = 'flex';
+                generateConclusion();
+                generateAnswersSummary();
+            }
+        }
+
+        /**
+         * Moves to the next step.
+         */
+        function nextStep() {
+            saveAnswers(currentStep);
+
+            // Handle the split of "Presupuestos" into two parts
+            if (currentStep === 2) {
+                currentStep = 2.5; // Go to the second part of Presupuestos
+            } else {
+                currentStep++;
+            }
+
+            if (currentStep > totalSteps) {
+                showStep('step-conclusion');
+            } else {
+                showStep(currentStep);
+            }
+        }
+
+        /**
+         * Moves to the previous step.
+         */
+        function prevStep() {
+            if (currentStep === 2.5) {
+                currentStep = 2; // Go back to the first part of Presupuestos
+            } else {
+                currentStep--;
+            }
+
+            if (currentStep < 1) {
+                currentStep = 1;
+            }
+            showStep(currentStep);
+        }
+
+        /**
+         * Saves the answers from the current step to the 'answers' object.
+         * @param {number} stepNum - The number of the step whose answers are to be saved.
+         */
+        function saveAnswers(stepNum) {
+            switch (stepNum) {
+                case 1:
+                    answers.condicion_imposicion = document.querySelector('input[name="condicion_imposicion"]:checked')?.value || '';
+                    break;
+                case 2:
+                    answers.tipo_delito = document.querySelector('input[name="tipo_delito"]:checked')?.value || '';
+                    break;
+                case 2.5: // For the new step 2.5
+                    answers.condiciones_afectado = Array.from(document.querySelectorAll('input[name="condiciones_afectado"]:checked'))
+                        .map(cb => cb.value);
+                    break;
+                case 3:
+                    answers.sujeto_legitimado = document.querySelector('input[name="sujeto_legitimado"]:checked')?.value || '';
+                    break;
+                case 4:
+                    answers.sujeto_obligado = document.querySelector('input[name="sujeto_obligado"]:checked')?.value || '';
+                    break;
+                case 5:
+                    answers.beneficiario = document.querySelector('input[name="beneficiario"]:checked')?.value || '';
+                    break;
+                case 6:
+                    answers.acreditacion = document.querySelector('input[name="acreditacion"]:checked')?.value || '';
+                    break;
+            }
+            console.log('Current Answers:', answers); // For debugging
+        }
+
+        /**
+         * Generates and displays the final conclusion based on collected answers.
+         */
+        function generateConclusion() {
+            let conclusion = "";
+            let canApplyMeasure = true;
+            let reasons = [];
+
+            // 1. CONDICIÓN DE IMPOSICIÓN
+            if (answers.condicion_imposicion !== 'procede') {
+                canApplyMeasure = false;
+                reasons.push("El delito debe causar daños y perjuicios resarcibles.");
+            }
+
+            // 2. PRESUPUESTOS - Tipo de Delito
+            const procedingDelitos = ["HOMICIDIO", "LESIONES_GRAVES", "VIOLENCIA_FAMILIAR", "OMISION_ASISTENCIA_FAMILIAR", "VIOLACION_LIBERTAD_SEXUAL"];
+            if (!procedingDelitos.includes(answers.tipo_delito)) {
+                canApplyMeasure = false;
+                reasons.push(`El tipo de delito (${answers.tipo_delito || 'no especificado'}) no procede para esta medida.`);
+            }
+
+            // 2.5. PRESUPUESTOS - Condiciones del Afectado
+            const procedingCondiciones = ["IMPOSIBILIDAD_DE_SUBSISTENCIA", "INCAPACIDAD_DE_TRABAJO"];
+            const hasProceedingCondicion = answers.condiciones_afectado.some(cond => procedingCondiciones.includes(cond));
+            if (!hasProceedingCondicion) {
+                canApplyMeasure = false;
+                reasons.push("Se requiere imposibilidad de subsistencia o incapacidad de trabajo.");
+            }
+
+            // 3. SUJETO LEGITIMADO
+            const procedingLegitimados = ["Fiscal", "Actor civil"];
+            if (!procedingLegitimados.includes(answers.sujeto_legitimado)) {
+                canApplyMeasure = false;
+                reasons.push(`El sujeto solicitante (${answers.sujeto_legitimado || 'no especificado'}) no está legitimado.`);
+            }
+
+            // 4. SUJETO OBLIGADO
+            const procedingObligados = ["Imputado", "Tercero civil responsable"];
+            if (!procedingObligados.includes(answers.sujeto_obligado)) {
+                canApplyMeasure = false;
+                reasons.push(`El sujeto obligado (${answers.sujeto_obligado || 'no especificado'}) no procede para esta medida.`);
+            }
+
+            // 5. BENEFICIARIO
+            const procedingBeneficiarios = ["Sujeto pasivo del Delito", "Familiares"];
+            if (!procedingBeneficiarios.includes(answers.beneficiario)) {
+                canApplyMeasure = false;
+                reasons.push(`El beneficiario (${answers.beneficiario || 'no especificado'}) no procede para esta medida.`);
+            }
+
+            // 6. ACREDITACIÓN
+            if (answers.acreditacion !== 'si') {
+                canApplyMeasure = false;
+                reasons.push("No se presentaron los medios de prueba necesarios para acreditar la necesidad.");
+            }
+
+            if (canApplyMeasure) {
+                conclusion = `✅ SÍ ES POSIBLE APLICAR LA MEDIDA CAUTELAR DE PENSIÓN ANTICIPADA DE ALIMENTOS. Se cumplen todos los requisitos legales y materiales.`;
+                finalResultDiv.classList.remove('bg-red-50', 'border-red-500', 'text-red-800');
+                finalResultDiv.classList.add('bg-blue-50', 'border-blue-500', 'text-blue-800');
+            } else {
+                conclusion = `❌ NO ES POSIBLE APLICAR LA MEDIDA CAUTELAR DE PENSIÓN ANTICIPADA DE ALIMENTOS. No se cumplen los requisitos legales y/o materiales.`;
+                if (reasons.length > 0) {
+                    conclusion += ` Razones: ${reasons.join(' ')}`;
+                } else {
+                    conclusion += ` Faltan datos clave o las condiciones no se cumplen.`;
+                }
+                finalResultDiv.classList.remove('bg-blue-50', 'border-blue-500', 'text-blue-800');
+                finalResultDiv.classList.add('bg-red-50', 'border-red-500', 'text-red-800');
+            }
+
+            finalResultDiv.textContent = conclusion;
+        }
+
+        /**
+         * Generates a summary of all collected answers.
+         */
+        function generateAnswersSummary() {
+            answersSummaryUl.innerHTML = ''; // Clear previous summary
+
+            const appendAnswer = (label, value, options) => {
+                let displayValue = value;
+                if (Array.isArray(value)) {
+                    displayValue = value.length > 0 ? value.map(val => {
+                        const option = options?.find(opt => opt.value === val);
+                        return option ? option.label.replace(/ \(Procede\)|\(No procede\)/g, '') : val;
+                    }).join(', ') : 'Ninguna seleccionada';
+                } else if (value && options) {
+                    const option = options.find(opt => opt.value === value);
+                    if (option) {
+                        displayValue = option.label.replace(/ \(Procede\)|\(No procede\)/g, '');
+                    }
+                }
+                if (displayValue) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="font-semibold">${label}:</span> ${displayValue}`;
+                    answersSummaryUl.appendChild(li);
+                }
+            };
+
+            // Define options for display (removing the "procede/no procede" from summary for cleaner output)
+            const yesNoOptions = [{value: 'si', label: 'Sí'}, {value: 'no', label: 'No'}];
+
+            appendAnswer('Condición de Imposición', answers.condicion_imposicion, [
+                {value: 'procede', label: 'Delito causa daños y perjuicios resarcibles (procede)'},
+                {value: 'no procede', label: 'Delito no causa daño y perjuicio resarcible (No procede)'}
+            ]);
+            appendAnswer('Tipo de Delito', answers.tipo_delito, [
+                {value: 'HOMICIDIO', label: 'HOMICIDIO (Procede)'},
+                {value: 'LESIONES_GRAVES', label: 'LESIONES GRAVES (Procede)'},
+                {value: 'VIOLENCIA_FAMILIAR', label: 'VIOLENCIA FAMILIAR (Procede)'},
+                {value: 'OMISION_ASISTENCIA_FAMILIAR', label: 'OMISIÓN DE ASISTENCIA FAMILIAR (Procede)'},
+                {value: 'VIOLACION_LIBERTAD_SEXUAL', label: 'VIOLACIÓN DE LIBERTAD SEXUAL (Procede)'},
+                {value: 'Otro delito', label: 'Otro delito (No procede)'}
+            ]);
+            appendAnswer('Condiciones del Afectado', answers.condiciones_afectado, [
+                {value: 'IMPOSIBILIDAD_DE_SUBSISTENCIA', label: 'IMPOSIBILIDAD DE SUBSISTENCIA (procede)'},
+                {value: 'INCAPACIDAD_DE_TRABAJO', label: 'INCAPACIDAD DE TRABAJO (procede)'},
+                {value: 'Otro', label: 'Otro (No procede)'}
+            ]);
+            appendAnswer('Sujeto Legitimado', answers.sujeto_legitimado, [
+                {value: 'Fiscal', label: 'Fiscal (procede)'},
+                {value: 'Actor civil', label: 'Actor civil (procede)'},
+                {value: 'Otro', label: 'Otro (no procede)'}
+            ]);
+            appendAnswer('Sujeto Obligado', answers.sujeto_obligado, [
+                {value: 'Imputado', label: 'Imputado (procede)'},
+                {value: 'Tercero civil responsable', label: 'Tercero civil responsable (procede)'},
+                {value: 'Otro', label: 'Otro (no procede)'}
+            ]);
+            appendAnswer('Beneficiario', answers.beneficiario, [
+                {value: 'Sujeto pasivo del Delito', label: 'Sujeto pasivo del Delito (Procede)'},
+                {value: 'Familiares', label: 'Familiares (procede)'},
+                {value: 'Cualquier otra persona', label: 'Cualquier otra persona (No procede)'}
+            ]);
+            appendAnswer('Acreditación', answers.acreditacion, [
+                {value: 'si', label: 'Sí (En efecto se acreditó su necesidad)'},
+                {value: 'no', label: 'No (Únicamente se alegó, pero no se presentó)'}
+            ]);
+        }
+
+        // Event Listeners for navigation buttons
+        nextBtn.addEventListener('click', nextStep);
+        prevBtn.addEventListener('click', prevStep);
+        resetBtn.addEventListener('click', () => {
+            // Reset all answers
+            Object.keys(answers).forEach(key => {
+                if (Array.isArray(answers[key])) {
+                    answers[key] = [];
+                } else {
+                    answers[key] = '';
+                }
+            });
+
+            // Clear radio/checkbox selections
+            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => checkbox.checked = false);
+
+            currentStep = 1;
+            showStep(currentStep);
+        });
+
+        // Initial display
+        showStep(currentStep);
+    </script>
+</body>
+</html>
